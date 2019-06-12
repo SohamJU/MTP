@@ -1,0 +1,38 @@
+#logistic Regression from Scratch
+data=read.csv('data.csv')
+ind=as.matrix(data[c(1,2)])
+dep=as.matrix(data[3])
+ind=cbind(rep(1,nrow(ind)),ind)
+sigmoid=function(z)
+{
+  p=1/(1+exp(-z))
+  return(p)
+}
+#Cost Function
+cost <- function(theta)
+{
+m <- nrow(ind)
+p <- sigmoid(ind%*%theta)
+J <- (-1/m)*sum((dep*log(p)) + ((1-dep)*log(1-p)))
+return(J)
+}
+#Intial theta
+initial_theta <- rep(0,ncol(ind))
+#Cost at inital theta
+cost(initial_theta)
+#Optimizing by Gradient Descent
+optimize=optim(par=initial_theta,fn=cost)
+optimize
+theta=optimize$par
+cost(theta)
+# probability of admission for student
+prob <- sigmoid(t(c(1,40,70))%*%theta)
+prob
+#Matching with Package
+model1=glm(label~.,data=data,family='binomial')
+model1
+trial=data.frame(score.1=40,score.2=70)
+prob1=predict(model1,type='response',newdata=trial)
+prob1
+error=prob-prob1
+error
