@@ -20,8 +20,8 @@ split=sample.split(working$Class,SplitRatio = 0.8)
 training_set=subset(working,split==TRUE)
 test_set=subset(working,split==FALSE)
 #Linear Kernel
-svm.linear=svm(Class~.,data=training_set,kernel='linear')
-svm.linear
+#svm.linear=svm(Class~.,data=training_set,kernel='linear')
+#svm.linear
 new=tune(svm,Class~.,data=training_set,kernel='linear',ranges=list(cost= 10^(-5:2)))
 new
 summary(tune.linear)
@@ -31,7 +31,8 @@ plot1
 #Prediction and ROC
 fitted.svm.linear=svm(Class~.,data=training_set,kernel='linear',cost=0.01,probability=TRUE)
 summary(fitted.svm.linear)plot(svm.auc,type='o',main='Receiver Operator Curve for Linear Kernel SVM at cost=0.01') 
-
+#Conlusion
+#1-42 features
 pred_linear=predict(fitted.svm.linear,newdata=test_set,decision.values = TRUE, probability = TRUE) 
 confuse=confusionMatrix(test_set$Class,pred_linear,positive='R')
 confuse
